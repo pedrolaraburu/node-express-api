@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgres:
+    container_name: my-postgres-container
+    image: my-postgres-image
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
