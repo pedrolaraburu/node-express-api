@@ -1,9 +1,7 @@
 CREATE TABLE users (
-	id VARCHAR(255) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	nome_completo VARCHAR(255),
 	genero VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
-	telefone VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
+	telefone VARCHAR(255) NOT NULL
 );
