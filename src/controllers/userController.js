@@ -32,8 +32,13 @@ const insertStudent = async (req, res) => {
 
 const deleteStudent = async (req, res) => {
     try {
-        await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
-        res.status(200).send('Student deleted with success!');
+        const user = await pool.query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+        if (user.rows.length === 0) {
+            res.status(404).send('User not found');
+        } else {
+            await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
+            res.status(200).send('Student deleted with success!');
+        }
     } catch (err) {
         res.status(500).send(err);
     }
