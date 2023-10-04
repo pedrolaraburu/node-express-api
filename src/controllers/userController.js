@@ -1,47 +1,42 @@
 const pool = require('../settings/db');
 
-const getStudents = (req, res) => {
-    pool.query('SELECT * FROM users', (err, result) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).send(result.rows);
-        }
-    })
+const getStudents = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM users');
+        res.status(200).send(result.rows);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 }
 
-const getStudentsById = (req, res) => {
+const getStudentsById = async (req, res) => {
     const bodyId = parseInt(req.params.id);
-    pool.query('SELECT * FROM users WHERE id = $1', [bodyId], (err, result) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).send(result.rows[0]);
-        }
-    })
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE id = $1', [bodyId]);
+        res.status(200).send(result.rows[0]);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 }
 
 
-const insertStudent = (req, res) => {
-    pool.query('INSERT INTO users (nome_completo, genero, email, telefone) VALUES ($1, $2, $3, $4)', 
-    [req.body.nome_completo, req.body.genero, req.body.email, req.body.telefone], 
-        (err, result) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).send('Student created with success!');
-        }
-    })
+const insertStudent = async (req, res) => {
+    try {
+        await pool.query('INSERT INTO users (nome_completo, genero, email, telefone) VALUES ($1, $2, $3, $4)', 
+            [req.body.nome_completo, req.body.genero, req.body.email, req.body.telefone]);
+        res.status(200).send('Student created with success!');
+    } catch (err) {
+        res.status(500).send(err);
+    }
 }
 
-const deleteStudent = (req, res) => {
-    pool.query('DELETE FROM users WHERE id = $1', [req.params.id], (err, result) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).send('Student deleted with success!');
-        }
-    })
+const deleteStudent = async (req, res) => {
+    try {
+        await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
+        res.status(200).send('Student deleted with success!');
+    } catch (err) {
+        res.status(500).send(err);
+    }
 }
 
 
